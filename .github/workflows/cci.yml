@@ -45,3 +45,14 @@ jobs:
             ./case.setup
             ./case.build -v
         shell: bash -el {0}
+      - 
+        name: Artifacts
+        uses: actions/upload-artifact@v4
+        if: ${{ always() }}
+        with:
+          name: ${{ matrix.test }}
+          path: |
+            ~/projects/e3sm/scratch/${{ matrix.test }}*/TestStatus.log
+            ~/projects/e3sm/scratch/${{ matrix.test }}*/bld/*.bldlog.*
+            ~/projects/e3sm/scratch/${{ matrix.test }}*/run/*.log.*
+            ~/projects/e3sm/scratch/${{ matrix.test }}*/run/*.cprnc.out
