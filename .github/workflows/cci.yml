@@ -21,27 +21,33 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: recursive
+        #   submodules: recursive
           show-progress: false
           persist-credentials: false
       - 
         uses: mamba-org/setup-micromamba@v1
         with:
             micromamba-version: 'latest'
+            environment-file: env.yml
             init-shell: >-
                 bash
+                powershell
+            cache-environment: true
+            post-cleanup: 'all'
       - 
         name: Import numpy in micromamba environment (bash)
         run: |
-            micromamba install -y netcdf4 netcdf-fortran netcdf-cxx4 hdf5 mpich compilers python=3.10 
-            export COM="WCYCL1850"
-            export RES="ne4_oQU240"
-            export MAC="singularity"
-            export USER=test       
-            cd e3sm/cime/scripts     
-            mkdir -p $HOME/projects/e3sm/cesm-inputdata
-            ./create_newcase --case "${COM}.${RES}.${MAC}" --compset ${COM} --res ${RES} --machine ${MAC}
-            cd "${COM}.${RES}.${MAC}"
-            ./case.setup
-            ./case.build -v
+            # micromamba install -y netcdf4 netcdf-fortran netcdf-cxx4 hdf5 mpich compilers python=3.10 
+            python --version
+            micromamba info | grep -q "environment : env-name"
+            # export COM="WCYCL1850"
+            # export RES="ne4_oQU240"
+            # export MAC="singularity"
+            # export USER=test       
+            # cd e3sm/cime/scripts     
+            # mkdir -p $HOME/projects/e3sm/cesm-inputdata
+            # ./create_newcase --case "${COM}.${RES}.${MAC}" --compset ${COM} --res ${RES} --machine ${MAC}
+            # cd "${COM}.${RES}.${MAC}"
+            # ./case.setup
+            # ./case.build -v
         shell: bash -el {0}
