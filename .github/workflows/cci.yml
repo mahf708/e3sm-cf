@@ -27,7 +27,7 @@ jobs:
       - 
         uses: mamba-org/setup-micromamba@v1
         with:
-            micromamba-version: '1.5.6'
+            micromamba-version: 'latest'
             init-shell: >-
                 bash
                 powershell
