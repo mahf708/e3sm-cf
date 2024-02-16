@@ -21,7 +21,7 @@ jobs:
         name: Checkout
         uses: actions/checkout@v4
         with:
-        #   submodules: recursive
+          submodules: recursive
           show-progress: false
           persist-credentials: false
       - 
@@ -31,23 +31,17 @@ jobs:
             environment-file: env.yml
             init-shell: >-
                 bash
-            # cache-environment: true
-            # post-cleanup: 'all'
       - 
         name: CIME
         run: |
-            # micromamba install -y netcdf4 netcdf-fortran netcdf-cxx4 hdf5 mpich compilers python=3.10 
-            python --version
-            micromamba info
-            micromamba env list
-            # export COM="WCYCL1850"
-            # export RES="ne4_oQU240"
-            # export MAC="singularity"
-            # export USER=test       
-            # cd e3sm/cime/scripts     
-            # mkdir -p $HOME/projects/e3sm/cesm-inputdata
-            # ./create_newcase --case "${COM}.${RES}.${MAC}" --compset ${COM} --res ${RES} --machine ${MAC}
-            # cd "${COM}.${RES}.${MAC}"
-            # ./case.setup
-            # ./case.build -v
+            export COM="WCYCL1850"
+            export RES="ne4_oQU240"
+            export MAC="singularity"
+            export USER=test       
+            cd e3sm/cime/scripts     
+            mkdir -p $HOME/projects/e3sm/cesm-inputdata
+            ./create_newcase --case "${COM}.${RES}.${MAC}" --compset ${COM} --res ${RES} --machine ${MAC}
+            cd "${COM}.${RES}.${MAC}"
+            ./case.setup
+            ./case.build -v
         shell: bash -el {0}
