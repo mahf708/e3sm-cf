@@ -38,7 +38,8 @@ jobs:
         run: |
             # micromamba install -y netcdf4 netcdf-fortran netcdf-cxx4 hdf5 mpich compilers python=3.10 
             python --version
-            micromamba info | grep -q "environment : env-name"
+            micromamba info
+            micromamba env list
             # export COM="WCYCL1850"
             # export RES="ne4_oQU240"
             # export MAC="singularity"
