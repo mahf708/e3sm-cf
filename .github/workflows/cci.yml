@@ -1,0 +1,59 @@
+name: blds
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+
+jobs:
+  ocis:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - 
+        name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          show-progress: false
+          persist-credentials: false
+      - 
+        uses: mamba-org/setup-micromamba@v1
+        with:
+            micromamba-version: 'latest'
+            environment-file: env.yml
+            init-shell: >-
+                bash
+      - 
+        name: CIME
+        run: |
+            export COM="WCYCL1850"
+            export RES="ne4_oQU240"
+            export MAC="cf"
+            export full_name="WCYCL1850.ne4_oQU240.cf"
+            export USER=test       
+            cd e3sm/cime/scripts     
+            mkdir -p $HOME/projects/e3sm/cesm-inputdata
+            ./create_newcase --case "${COM}.${RES}.${MAC}" --compset ${COM} --res ${RES} --machine ${MAC}
+            cd "${COM}.${RES}.${MAC}"
+            ./case.setup
+            ./case.build -v
+        shell: bash -el {0}
+      - 
+        name: Artifacts
+        uses: actions/upload-artifact@v4
+        if: ${{ always() }}
+        with:
+          name: WCYCL1850.ne4_oQU240.cf
+          path: |
+            ~/projects/e3sm/scratch/WCYCL1850.ne4_oQU240.cf*/TestStatus.log
+            ~/projects/e3sm/scratch/WCYCL1850.ne4_oQU240.cf*/bld/*.bldlog.*
+            ~/projects/e3sm/scratch/WCYCL1850.ne4_oQU240.cf*/run/*.log.*
+            ~/projects/e3sm/scratch/WCYCL1850.ne4_oQU240.cf*/run/*.cprnc.out
