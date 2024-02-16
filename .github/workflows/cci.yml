@@ -37,6 +37,7 @@ jobs:
             export COM="WCYCL1850"
             export RES="ne4_oQU240"
             export MAC="cf"
+            export full_name="WCYCL1850.ne4_oQU240.cf"
             export USER=test       
             cd e3sm/cime/scripts     
             mkdir -p $HOME/projects/e3sm/cesm-inputdata
@@ -50,9 +51,9 @@ jobs:
         uses: actions/upload-artifact@v4
         if: ${{ always() }}
         with:
-          name: ${{ matrix.test }}
+          name: WCYCL1850.ne4_oQU240.cf
           path: |
-            ~/projects/e3sm/scratch/${{ matrix.test }}*/TestStatus.log
-            ~/projects/e3sm/scratch/${{ matrix.test }}*/bld/*.bldlog.*
-            ~/projects/e3sm/scratch/${{ matrix.test }}*/run/*.log.*
-            ~/projects/e3sm/scratch/${{ matrix.test }}*/run/*.cprnc.out
+            ~/projects/e3sm/scratch/WCYCL1850.ne4_oQU240.cf*/TestStatus.log
+            ~/projects/e3sm/scratch/WCYCL1850.ne4_oQU240.cf*/bld/*.bldlog.*
+            ~/projects/e3sm/scratch/WCYCL1850.ne4_oQU240.cf*/run/*.log.*
+            ~/projects/e3sm/scratch/WCYCL1850.ne4_oQU240.cf*/run/*.cprnc.out
