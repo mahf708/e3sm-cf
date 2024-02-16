@@ -36,7 +36,7 @@ jobs:
         run: |
             export COM="WCYCL1850"
             export RES="ne4_oQU240"
-            export MAC="singularity"
+            export MAC="cf"
             export USER=test       
             cd e3sm/cime/scripts     
             mkdir -p $HOME/projects/e3sm/cesm-inputdata
