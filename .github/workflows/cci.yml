@@ -1,0 +1,50 @@
+name: blds
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+
+jobs:
+  ocis:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+
+    steps:
+      - 
+        name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          show-progress: false
+          persist-credentials: false
+      - 
+        uses: mamba-org/setup-micromamba@v1
+        with:
+            micromamba-version: '1.5.6'
+            init-shell: >-
+                bash
+                powershell
+            cache-environment: true
+            post-cleanup: 'all'
+      - 
+        name: Import numpy in micromamba environment (bash)
+        run: |
+            micromamba install -y netcdf4 netcdf-fortran netcdf-cxx4 hdf5 mpich compilers python=3.10 
+            export COM="WCYCL1850"
+            export RES="ne4_oQU240"
+            export MAC="singularity"
+            export USER=test       
+            cd e3sm/cime/scripts     
+            mkdir -p $HOME/projects/e3sm/cesm-inputdata
+            ./create_newcase --case "${COM}.${RES}.${MAC}" --compset ${COM} --res ${RES} --machine ${MAC}
+            cd "${COM}.${RES}.${MAC}"
+            ./case.setup
+            ./case.build -v
+        shell: bash -el {0}
